@@ -3,11 +3,11 @@ from rest_framework import routers
 
 from api.views import ReviewViewSet, CommentViewSet
 
-router_v1 = routers.DefaultRouter
+router_v1 = routers.DefaultRouter()
 router_v1.register(
-    r'titles/(?P<post_id>\d+)/reviews/', ReviewViewSet, basename='reviews')
+    r'titles/(?P<title_id>\d+)/reviews/', ReviewViewSet, basename='reviews')
 router_v1.register(
-    r'titles/(?P<post_id>\d+)/reviews/(?P<post_id>\d+)/comments/',
+    r'titles/(?P<title_id>\d+)/reviews/(?P<review_id>\d+)/comments/',
     CommentViewSet, basename='comments'
 )
 
