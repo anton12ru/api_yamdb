@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from reviews.models import Review, Comments
+from reviews.models import Review, Comment
 
 
 class ReviewSerializer(serializers.ModelSerializer):
@@ -22,4 +22,4 @@ class CommentSerializer(serializers.ModelSerializer):
 
     class Meta:
         fileds = ('id', 'text', 'author', 'pub_date')
-        model = Comments
+        model = Comment

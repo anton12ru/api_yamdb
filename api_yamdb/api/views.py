@@ -1,7 +1,7 @@
 from rest_framework.viewsets import ModelViewSet
 
 from api.serializers import ReviewSerializer, CommentSerializer
-from reviews.models import Review, Comments
+from reviews.models import Review, Comment
 
 
 class ReviewViewSet(ModelViewSet):
@@ -14,5 +14,5 @@ class CommentViewSet(ModelViewSet):
 
     def get_queryset(self):
         review_id = self.kwargs.get('review_id')
-        queryset = Comments.objects.filter(review=review_id)
+        queryset = Comment.objects.filter(review=review_id)
         return queryset
