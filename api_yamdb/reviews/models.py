@@ -6,7 +6,7 @@ User = get_user_model()
 
 
 class Title(models.Model):
-    pass
+    text = models.TextField()
 
 
 class Review(models.Model):
