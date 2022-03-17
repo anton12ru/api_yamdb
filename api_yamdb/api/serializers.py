@@ -12,14 +12,6 @@ class CustomUserSerializer(serializers.ModelSerializer):
         model = CustomUser
 
 
-class RegisterCustomUserSerializer(TokenObtainPairSerializer):
-    @classmethod
-    def get_token(cls, user):
-        token = super().get_token(user)
-        token["username"] = user.username
-        return token
-
-
 class ReviewSerializer(serializers.ModelSerializer):
     author = serializers.SlugRelatedField(
         read_only=True,
