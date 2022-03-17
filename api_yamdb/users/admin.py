@@ -8,5 +8,5 @@ class CustomUserAdmin(UserAdmin):
     model = CustomUser
     fieldsets = (
         *UserAdmin.fieldsets,
-        ('Other Personal info', {'fields': ('role', 'bio')}),
+        ("Other Personal info", {"fields": ("role", "bio")}),
     )

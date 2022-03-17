@@ -8,7 +8,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
     role = serializers.ChoiceField(choices=ROLE)
 
     class Meta:
-        fields = ('username', "email", "first_name", "last_name", "bio", "role")
+        fields = ("username", "email", "first_name", "last_name", "bio", "role")
         model = CustomUser
 
 
@@ -16,27 +16,27 @@ class RegisterCustomUserSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
-        token['username'] = user.username
+        token["username"] = user.username
         return token
 
 
 class ReviewSerializer(serializers.ModelSerializer):
     author = serializers.SlugRelatedField(
         read_only=True,
-        slug_field='username',
+        slug_field="username",
     )
 
     class Meta:
-        fields = ('id', 'text', 'author', 'score', 'pub_date')
+        fields = ("id", "text", "author", "score", "pub_date")
         model = Review
 
 
 class CommentSerializer(serializers.ModelSerializer):
     author = serializers.SlugRelatedField(
         read_only=True,
-        slug_field='username',
+        slug_field="username",
     )
 
     class Meta:
-        fileds = ('id', 'text', 'author', 'pub_date')
+        fileds = ("id", "text", "author", "pub_date")
         model = Comment

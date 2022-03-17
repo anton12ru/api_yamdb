@@ -125,3 +125,7 @@ SIMPLE_JWT = {
 #Custom User model
 
 AUTH_USER_MODEL = 'users.CustomUser' 
+
+# Этот бэкэнд просто отображает все электронные письма в консоли.
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
