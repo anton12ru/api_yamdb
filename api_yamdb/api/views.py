@@ -1,5 +1,5 @@
 from rest_framework.viewsets import ModelViewSet
-from reviews.models import Comment, Review
+from reviews.models import Comment, Review, Genre, Category
 from users.models import CustomUser
 
 from api.serializers import (
@@ -7,8 +7,18 @@ from api.serializers import (
     CustomUserSerializer,
     RegisterCustomUserSerializer,
     ReviewSerializer,
+    GenreSerializer,
+    CategorySerializer,
 )
 
+class GenreViewSet(ModelViewSet):
+    serializer_class = GenreSerializer
+    queryset = Genre.objects.all()
+
+
+class CategoryViewSet(ModelViewSet):
+    serializer_class = CategorySerializer
+    queryset = Category.objects.all()
 
 class CustomUserViewSet(ModelViewSet):
     serializer_class = CustomUserSerializer
