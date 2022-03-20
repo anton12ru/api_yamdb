@@ -23,7 +23,8 @@ class CustomUserManager(UserManager):
         role = ADMIN
         if password is None:
             raise TypeError("Поле password обязательное!")
-        return super().create_superuser(username, email, password, role, **extra_fields)
+        return super().create_superuser(
+            username, email, password, role, **extra_fields)
 
 
 class CustomUser(AbstractUser):
