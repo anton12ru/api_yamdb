@@ -1,11 +1,21 @@
 from rest_framework.viewsets import ModelViewSet
-from reviews.models import Comment, Review
+from reviews.models import Comment, Review, Genre, Category
 
 from api.serializers import (
     CommentSerializer,
     ReviewSerializer,
+    GenreSerializer,
+    CategorySerializer,
 )
 
+class GenreViewSet(ModelViewSet):
+    serializer_class = GenreSerializer
+    queryset = Genre.objects.all()
+
+
+class CategoryViewSet(ModelViewSet):
+    serializer_class = CategorySerializer
+    queryset = Category.objects.all()
 
 class ReviewViewSet(ModelViewSet):
     serializer_class = ReviewSerializer
