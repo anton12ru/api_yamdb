@@ -1,7 +1,5 @@
 from rest_framework import serializers
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from reviews.models import Comment, Review, Genre, Category
-from users.models import ROLE, CustomUser
 
 
 class GenreSerializer(serializers.ModelSerializer):
@@ -13,13 +11,6 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         exclude = ['id']
-
-class CustomUserSerializer(serializers.ModelSerializer):
-    role = serializers.ChoiceField(choices=ROLE)
-
-    class Meta:
-        fields = ("username", "email", "first_name", "last_name", "bio", "role")
-        model = CustomUser
 
 
 class ReviewSerializer(serializers.ModelSerializer):

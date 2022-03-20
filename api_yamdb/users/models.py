@@ -9,20 +9,22 @@ ROLE = ((ADMIN, "admin"), (MODERATOR, "moderator"), (USER, "user"))
 
 
 class CustomUserManager(UserManager):
-    def create_user(self, username, email, **extra_fields):
+    def create_user(self, username, email, role, **extra_fields):
+        role = USER
         if username is None:
             raise ValueError("Поле username обязательное!")
         if username == "me":
             raise ValueError('Имя пользователя "me" нельзя использовать!')
         if email is None:
             raise ValueError("Поле email обязательное!")
-        return super().create_user(username, email, **extra_fields)
+        return super().create_user(username, email, role, **extra_fields)
 
     def create_superuser(self, username, email, password, role, **extra_fields):
         role = ADMIN
         if password is None:
             raise TypeError("Поле password обязательное!")
-        return super().create_superuser(username, email, password, role, **extra_fields)
+        return super().create_superuser(
+            username, email, password, role, **extra_fields)
 
 
 class CustomUser(AbstractUser):
