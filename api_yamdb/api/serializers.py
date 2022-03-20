@@ -1,23 +1,5 @@
 from rest_framework import serializers
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from reviews.models import Comment, Review
-from users.models import ROLE, CustomUser
-
-
-class CustomUserSerializer(serializers.ModelSerializer):
-    role = serializers.ChoiceField(choices=ROLE)
-
-    class Meta:
-        fields = ("username", "email", "first_name", "last_name", "bio", "role")
-        model = CustomUser
-
-
-class RegisterCustomUserSerializer(TokenObtainPairSerializer):
-    @classmethod
-    def get_token(cls, user):
-        token = super().get_token(user)
-        token["username"] = user.username
-        return token
 
 
 class ReviewSerializer(serializers.ModelSerializer):
