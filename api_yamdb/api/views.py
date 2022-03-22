@@ -1,19 +1,15 @@
-from rest_framework.viewsets import ModelViewSet
-from reviews.models import Review, Genre, Category, Title
 from django.db.models import Avg
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.generics import get_object_or_404
-from users.permissions import IsAdminOrAuthorOrReadOnly, IsAdminOrReadOnly
-from .filters import TitleFilter
-from api.serializers import (
-    CommentSerializer,
-    ReviewSerializer,
-    GenreSerializer,
-    CategorySerializer,
-    TitleSerializer,
-)
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from reviews.filters import TitleFilter
+from reviews.models import Category, Genre, Review, Title
 from reviews.viewsets import ListCreateDestroyViewSet
+from users.permissions import IsAdminOrAuthorOrReadOnly, IsAdminOrReadOnly
+
+from api.serializers import (CategorySerializer, CommentSerializer,
+                             GenreSerializer, ReviewSerializer,
+                             TitleSerializer)
 
 
 class GenreViewSet(ListCreateDestroyViewSet):
