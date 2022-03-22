@@ -1,21 +1,23 @@
 from rest_framework.viewsets import ModelViewSet
-from reviews.models import Comment, Review, Genre, Category
+from reviews.models import Category, Comment, Genre, Review
 
-from api.serializers import (
-    CommentSerializer,
-    ReviewSerializer,
-    GenreSerializer,
-    CategorySerializer,
-)
+from .mixins import CreateDestroyListViewSet
+from .permissions import AdminOrReadOnly
+from .serializers import (CategorySerializer, CommentSerializer,
+                          GenreSerializer, ReviewSerializer)
 
-class GenreViewSet(ModelViewSet):
+
+class GenreViewSet(CreateDestroyListViewSet):
     serializer_class = GenreSerializer
     queryset = Genre.objects.all()
+    permission_classes = (AdminOrReadOnly,)
 
 
-class CategoryViewSet(ModelViewSet):
+class CategoryViewSet(CreateDestroyListViewSet):
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
+    permission_classes = (AdminOrReadOnly,)
+
 
 class ReviewViewSet(ModelViewSet):
     serializer_class = ReviewSerializer
