@@ -44,7 +44,8 @@ class RegistrationUserAPIView(views.APIView):
             print(user)
 
             if not user.exists():
-                new_user = CustomUser.objects.create(email=email, username=username)
+                new_user = CustomUser.objects.create(
+                    email=email, username=username)
                 send_mail_confirmation_code(new_user)
                 return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -63,14 +64,17 @@ class LoginTokenAPIView(views.APIView):
         """
         serializer = LoginTokenSerializer(data=request.data)
         if not serializer.is_valid() or None:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.errors,
+                            status=status.HTTP_400_BAD_REQUEST)
         username = serializer.data["username"]
         confirmation_code = serializer.data["confirmation_code"]
         user = get_object_or_404(CustomUser, username=username)
         if not default_token_generator.check_token(user, confirmation_code):
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.errors,
+                            status=status.HTTP_400_BAD_REQUEST)
         token = RefreshToken.for_user(user)
-        return Response({"token": str(token.access_token)}, status=status.HTTP_200_OK)
+        return Response({"token": str(token.access_token)},
+                        status=status.HTTP_200_OK)
 
 
 class CustomUserAPIView(views.APIView):
