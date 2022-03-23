@@ -5,26 +5,42 @@ from reviews.models import Comment, Review, Genre, Category, Title
 class GenreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Genre
-        exclude = ['id']
+        exclude = ["id"]
 
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        exclude = ['id']
+        exclude = ["id"]
 
 
 class TitleSerializer(serializers.ModelSerializer):
     category = CategorySerializer(read_only=True)
-    genre = GenreSerializer(many=True, read_only=True)
-    rating = serializers.FloatField(read_only=True)
+    genre = GenreSerializer(read_only=True, many=True)
+    rating = serializers.IntegerField(read_only=True, default=0)
 
     class Meta:
-        fields = '__all__'
+        fields = (
+            "id", "name", "year", "rating", "description", "category", "genre")
         model = Title
-        read_only_fields = ['id', 'rating']
+        read_only_fields = ["id", "rating"]
 
-    
+
+class TitleWriteSerializer(serializers.ModelSerializer):
+    category = serializers.SlugRelatedField(
+        queryset=Category.objects.all(), slug_field="slug"
+    )
+    genre = serializers.SlugRelatedField(
+        many=True, queryset=Genre.objects.all(), slug_field="slug"
+    )
+    rating = serializers.IntegerField(read_only=True, default=0)
+
+    class Meta:
+        fields = (
+            "id", "name", "year", "rating", "description", "category", "genre")
+        model = Title
+
+
 class ReviewSerializer(serializers.ModelSerializer):
     author = serializers.SlugRelatedField(
         read_only=True,
