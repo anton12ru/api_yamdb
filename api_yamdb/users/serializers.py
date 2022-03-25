@@ -17,11 +17,12 @@ class RegistrationUserSerializer(serializers.ModelSerializer):
         model = CustomUser
         fields = ("username", "email")
 
-    def validate_me(self, value):
+    def validate_username(self, value):
         if value == "me":
             raise serializers.ValidationError(
                 "Использовать 'me' в качестве username запрещено!!!"
             )
+        return value
 
 
 class LoginTokenSerializer(serializers.ModelSerializer):
@@ -34,7 +35,7 @@ class LoginTokenSerializer(serializers.ModelSerializer):
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
-    role = serializers.CharField(max_length=150)
+    role = serializers.CharField(max_length=150, read_only=True)
     username = serializers.CharField(
         max_length=150,
         validators=[validators.UniqueValidator(queryset=CustomUser.object.all())],
@@ -48,8 +49,22 @@ class CustomUserSerializer(serializers.ModelSerializer):
         fields = ("username", "email", "first_name", "last_name", "bio", "role")
         model = CustomUser
 
-    def validate_me(self, value):
+    def validate_username(self, value):
         if value == "me":
             raise serializers.ValidationError(
                 "Использовать 'me' в качестве username запрещено!!!"
             )
+        return value
+
+
+class AdminSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = ("username", "email", "first_name", "last_name", "bio", "role")
+        model = CustomUser
+
+    def validate_username(self, value):
+        if value == "me":
+            raise serializers.ValidationError(
+                "Использовать 'me' в качестве username запрещено!!!"
+            )
+        return value

@@ -5,6 +5,7 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from reviews.filters import TitleFilter
 from reviews.models import Category, Genre, Review, Title
 from api.permissions import IsAdminOrAuthorOrReadOnly, IsAdminOrReadOnly
+from django_filters.rest_framework import DjangoFilterBackend
 
 from api.mixins import ListCreateDestroyViewSet
 from api.serializers import (
@@ -31,7 +32,7 @@ class CategoryViewSet(ListCreateDestroyViewSet):
 
 class ReviewViewSet(viewsets.ModelViewSet):
     serializer_class = ReviewSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly, IsAdminOrAuthorOrReadOnly]
+    permission_classes = (IsAdminOrAuthorOrReadOnly, IsAuthenticatedOrReadOnly)
 
     def get_queryset(self):
         title = get_object_or_404(Title, id=self.kwargs.get("title_id"))
@@ -47,7 +48,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
 
 class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly, IsAdminOrAuthorOrReadOnly]
+    permission_classes = (IsAdminOrAuthorOrReadOnly, IsAuthenticatedOrReadOnly)
 
     def get_queryset(self):
         review = get_object_or_404(Review, id=self.kwargs.get("review_id"))
@@ -61,10 +62,11 @@ class CommentViewSet(viewsets.ModelViewSet):
 class TitleViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAdminOrReadOnly,)
     serializer_class = TitleSerializer
-    queryset = Title.objects.annotate(
-        rating=Avg("reviews__score")).order_by("id")
+    queryset = Title.objects.annotate(rating=Avg("reviews__score")).order_by("id")
+    filter_backends = (DjangoFilterBackend,)
     filterset_class = TitleFilter
-    ordering_fields = ["name"]
+    ordering_fields = ("name",)
+    filter_fields = ("=genre__slug",)
 
     # def perform_create(self, serializer):
     #     category = get_object_or_404(
@@ -78,10 +80,10 @@ class TitleViewSet(viewsets.ModelViewSet):
     # def perform_update(self, serializer):
     #     serializer.save()
     #     category = get_object_or_404(
-    #         Category, slug=self.request.data.getlist('category')
+    #         Category, slug=self.request.data.get('category')
     #     )
     #     genre = Genre.objects.filter(
-    #         slug__in=self.request.data.getlist('genre')
+    #         slug__in=self.request.data.get('genre')
     #     )
     #     serializer.save(category=category, genre=genre)
 

@@ -20,8 +20,7 @@ class TitleSerializer(serializers.ModelSerializer):
     rating = serializers.IntegerField(read_only=True, default=0)
 
     class Meta:
-        fields = (
-            "id", "name", "year", "rating", "description", "category", "genre")
+        fields = ("id", "name", "year", "rating", "description", "category", "genre")
         model = Title
         read_only_fields = ["id", "rating"]
 
@@ -36,8 +35,7 @@ class TitleWriteSerializer(serializers.ModelSerializer):
     rating = serializers.IntegerField(read_only=True, default=0)
 
     class Meta:
-        fields = (
-            "id", "name", "year", "rating", "description", "category", "genre")
+        fields = ("id", "name", "year", "rating", "description", "category", "genre")
         model = Title
 
 
@@ -51,6 +49,17 @@ class ReviewSerializer(serializers.ModelSerializer):
         fields = ("id", "text", "author", "score", "pub_date")
         model = Review
 
+    def validate(self, data):
+        is_exist = Review.objects.filter(
+            author=self.context["request"].user,
+            title=self.context["view"].kwargs.get("title_id"),
+        ).exists()
+        if is_exist and self.context["request"].method == "POST":
+            raise serializers.ValidationError(
+                "Пользователь уже оставлял отзыв на это произведение"
+            )
+        return data
+
 
 class CommentSerializer(serializers.ModelSerializer):
     author = serializers.SlugRelatedField(
@@ -59,5 +68,5 @@ class CommentSerializer(serializers.ModelSerializer):
     )
 
     class Meta:
-        fileds = ("id", "text", "author", "pub_date")
+        fields = ("id", "text", "author", "pub_date")
         model = Comment
