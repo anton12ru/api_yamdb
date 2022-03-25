@@ -6,11 +6,13 @@ from users.models import CustomUser
 class RegistrationUserSerializer(serializers.ModelSerializer):
     username = serializers.CharField(
         max_length=50,
-        validators=[validators.UniqueValidator(queryset=CustomUser.object.all())],
+        validators=[validators.UniqueValidator(
+            queryset=CustomUser.object.all())],
     )
     email = serializers.EmailField(
         max_length=50,
-        validators=[validators.UniqueValidator(queryset=CustomUser.object.all())],
+        validators=[validators.UniqueValidator(
+            queryset=CustomUser.object.all())],
     )
 
     class Meta:
@@ -38,15 +40,18 @@ class CustomUserSerializer(serializers.ModelSerializer):
     role = serializers.CharField(max_length=150, read_only=True)
     username = serializers.CharField(
         max_length=150,
-        validators=[validators.UniqueValidator(queryset=CustomUser.object.all())],
+        validators=[validators.UniqueValidator(
+            queryset=CustomUser.object.all())],
     )
     email = serializers.EmailField(
         max_length=254,
-        validators=[validators.UniqueValidator(queryset=CustomUser.object.all())],
+        validators=[validators.UniqueValidator(
+            queryset=CustomUser.object.all())],
     )
 
     class Meta:
-        fields = ("username", "email", "first_name", "last_name", "bio", "role")
+        fields = ("username", "email", "first_name", "last_name",
+                  "bio", "role")
         model = CustomUser
 
     def validate_username(self, value):
@@ -59,7 +64,8 @@ class CustomUserSerializer(serializers.ModelSerializer):
 
 class AdminSerializer(serializers.ModelSerializer):
     class Meta:
-        fields = ("username", "email", "first_name", "last_name", "bio", "role")
+        fields = ("username", "email", "first_name", "last_name",
+                  "bio", "role")
         model = CustomUser
 
     def validate_username(self, value):

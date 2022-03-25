@@ -62,7 +62,8 @@ class CommentViewSet(viewsets.ModelViewSet):
 class TitleViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAdminOrReadOnly,)
     serializer_class = TitleSerializer
-    queryset = Title.objects.annotate(rating=Avg("reviews__score")).order_by("id")
+    queryset = Title.objects.annotate(rating=Avg(
+                                      "reviews__score")).order_by("id")
     filter_backends = (DjangoFilterBackend,)
     filterset_class = TitleFilter
     ordering_fields = ("name",)
