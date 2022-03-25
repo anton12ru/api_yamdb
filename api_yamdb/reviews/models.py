@@ -70,8 +70,8 @@ class Title(models.Model):
 
 
 class Review(models.Model):
-    text = models.TextField()
     title = models.ForeignKey(Title, on_delete=models.CASCADE, related_name="reviews")
+    text = models.TextField()
     author = models.ForeignKey(
         CustomUser, on_delete=models.CASCADE, related_name="reviews"
     )
@@ -92,13 +92,13 @@ class Review(models.Model):
 
 
 class Comment(models.Model):
-    author = models.ForeignKey(
-        CustomUser, on_delete=models.CASCADE, related_name="comments"
-    )
     review = models.ForeignKey(
         Review, on_delete=models.CASCADE, related_name="comments"
     )
     text = models.TextField()
+    author = models.ForeignKey(
+        CustomUser, on_delete=models.CASCADE, related_name="comments"
+    )
     pub_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
