@@ -83,16 +83,6 @@ class AdminUserViewSet(ModelViewSet):
     search_fields = ("username",)
     lookup_field = "username"
 
-    # def create(self, request):
-    #     email = request.data.get("email")
-    #     username = request.data.get("username")
-    #     user = CustomUser.object.create_user(
-    #         email=email, username=username, role='user')
-    #     serializer = AdminSerializer(user, data=request.data)
-    #     serializer.is_valid(raise_exception=True)
-    #     serializer.save()
-    #     return Response(serializer.data, status=status.HTTP_201_CREATED)
-
     @action(
         methods=["GET", "PATCH"],
         detail=False,
