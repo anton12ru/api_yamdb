@@ -65,7 +65,7 @@ class LoginTokenAPIView(views.APIView):
         """
         serializer = LoginTokenSerializer(data=request.data)
         if not serializer.is_valid() or None:
-            return Response(serializer.errors, 
+            return Response(serializer.errors,
                             status=status.HTTP_400_BAD_REQUEST)
         username = serializer.data["username"]
         confirmation_code = serializer.data["confirmation_code"]
