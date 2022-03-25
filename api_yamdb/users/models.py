@@ -13,7 +13,8 @@ class CustomUserManager(UserManager):
     def create_superuser(self, username, email, password, **extra_fields):
         if password is None:
             raise TypeError("Поле password обязательное!")
-        return super().create_superuser(username, email, password, **extra_fields)
+        return super().create_superuser(username, email,
+                                        password, **extra_fields)
 
 
 class CustomUser(AbstractUser):

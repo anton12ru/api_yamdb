@@ -45,7 +45,8 @@ class RegistrationUserAPIView(views.APIView):
             user = CustomUser.objects.filter(email=email, username=username)
 
             if not user.exists():
-                new_user = CustomUser.objects.create(email=email, username=username)
+                new_user = CustomUser.objects.create(email=email,
+                                                     username=username)
                 send_mail_confirmation_code(new_user)
                 return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -64,14 +65,17 @@ class LoginTokenAPIView(views.APIView):
         """
         serializer = LoginTokenSerializer(data=request.data)
         if not serializer.is_valid() or None:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.errors, 
+                            status=status.HTTP_400_BAD_REQUEST)
         username = serializer.data["username"]
         confirmation_code = serializer.data["confirmation_code"]
         user = get_object_or_404(CustomUser, username=username)
         if not default_token_generator.check_token(user, confirmation_code):
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.errors,
+                            status=status.HTTP_400_BAD_REQUEST)
         token = RefreshToken.for_user(user)
-        return Response({"token": str(token.access_token)}, status=status.HTTP_200_OK)
+        return Response({"token": str(token.access_token)},
+                        status=status.HTTP_200_OK)
 
 
 class AdminUserViewSet(ModelViewSet):
@@ -93,10 +97,13 @@ class AdminUserViewSet(ModelViewSet):
     def get_user_me(self, request):
         user = get_object_or_404(CustomUser, username=request.user.username)
         if request.method == "PATCH":
-            serializer = CustomUserSerializer(user, data=request.data, partial=True)
+            serializer = CustomUserSerializer(user,
+                                              data=request.data,
+                                              partial=True)
             if serializer.is_valid(raise_exception=True):
                 serializer.save(role=user.role)
                 return Response(serializer.data, status=status.HTTP_200_OK)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.errors,
+                            status=status.HTTP_400_BAD_REQUEST)
         serializer = CustomUserSerializer(user, partial=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
