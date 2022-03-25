@@ -51,27 +51,41 @@
 
 ## Процедура запуска проекта
 
-1. Клонировать репозиторий и перейти в него в командной строке  
+1. Клонировать репозиторий и перейти в него в командной строке
+``` 
 git clone https://github.com/ArturTopalyan/api_yamdb.git
 cd api_yamdb
+```
 
-2. Cоздать и активировать виртуальное окружение  
+2. Cоздать и активировать виртуальное окружение
+```
 python3 -m venv venv
 source venv/Scripts/activate
+```
 
-3. Обновить pip и установить зависимости из файла requirements.txt  
+3. Обновить pip и установить зависимости из файла requirements.txt
+```
 python -m pip install --upgrade pip
 pip install -r requirements.txt
+```
 
-4. Перейти в директорию api_yamdb  
+4. Перейти в директорию api_yamdb
+```
 cd api_yamdb
+```
 
-5. Выполнить миграции  
+5. Выполнить миграции
+```
 python manage.py migrate
+```
 
-6. Создать суперпользователя  
+6. Создать суперпользователя
+```
 python manage.py createsuperuser
+```
 
-7. Запустить проект  
+7. Запустить проект
+```
 python manage.py runserver
+```
 
