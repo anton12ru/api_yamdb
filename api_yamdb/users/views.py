@@ -4,13 +4,13 @@ from django.shortcuts import get_object_or_404
 from rest_framework import filters, status, views
 from rest_framework.decorators import action
 from rest_framework.pagination import LimitOffsetPagination
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from users.models import CustomUser
-from api.permissions import IsAdmin, IsAdminOrAuthorOrReadOnly
+from api.permissions import IsAdmin
 from users.serializers import (
     CustomUserSerializer,
     LoginTokenSerializer,
@@ -88,7 +88,7 @@ class AdminUserViewSet(ModelViewSet):
         detail=False,
         url_path="me",
         url_name="me",
-        permission_classes=(IsAdminOrAuthorOrReadOnly,),
+        permission_classes=(IsAuthenticated,),
     )
     def get_user_me(self, request):
         user = get_object_or_404(CustomUser, username=request.user.username)
