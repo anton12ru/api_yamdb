@@ -70,9 +70,8 @@ class Title(models.Model):
 
 
 class Review(models.Model):
-    title = models.ForeignKey(
-        Title, on_delete=models.CASCADE, related_name="reviews"
-    )
+    title = models.ForeignKey(Title, on_delete=models.CASCADE,
+                              related_name="reviews")
     text = models.TextField()
     author = models.ForeignKey(
         CustomUser, on_delete=models.CASCADE, related_name="reviews"
