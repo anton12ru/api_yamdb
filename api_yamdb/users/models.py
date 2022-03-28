@@ -13,26 +13,33 @@ class CustomUserManager(UserManager):
     def create_superuser(self, username, email, password, **extra_fields):
         if password is None:
             raise TypeError("Поле password обязательное!")
-        return super().create_superuser(username, email, password, **extra_fields)
+        return super().create_superuser(
+            username, email, password, **extra_fields
+        )
 
 
 class CustomUser(AbstractUser):
 
-    ROLE = (("admin", "admin"), ("moderator", "moderator"), ("user", "user"))
+    ADMIN = "admin"
+    MODERATOR = "moderator"
+    USER = "user"
 
-    email = models.EmailField(unique=True, blank=False, null=False)
+    ROLE = ((ADMIN, "admin"), (MODERATOR, "moderator"), (USER, "user"))
+
+    email = models.EmailField(
+        max_length=50, unique=True, blank=False, null=False)
     bio = models.TextField(blank=True, null=True)
     role = models.CharField(choices=ROLE, max_length=50, default="user")
     object = CustomUserManager()
 
     @property
     def is_user(self):
-        return self.role == self.ROLE[2][0]
+        return self.role == self.USER
 
     @property
     def is_admin(self):
-        return self.role == self.ROLE[0][0]
+        return self.role == self.ADMIN
 
     @property
     def is_moderator(self):
-        return self.role == self.ROLE[1][0]
+        return self.role == self.MODERATOR

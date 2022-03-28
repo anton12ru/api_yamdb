@@ -61,7 +61,7 @@ class Title(models.Model):
     )
 
     class Meta:
-        ordering = ("-year",)
+        ordering = ("-year", "id")
         verbose_name = "Произведение"
         verbose_name_plural = "Произведения"
 
@@ -70,7 +70,9 @@ class Title(models.Model):
 
 
 class Review(models.Model):
-    title = models.ForeignKey(Title, on_delete=models.CASCADE, related_name="reviews")
+    title = models.ForeignKey(
+        Title, on_delete=models.CASCADE, related_name="reviews"
+    )
     text = models.TextField()
     author = models.ForeignKey(
         CustomUser, on_delete=models.CASCADE, related_name="reviews"
@@ -86,9 +88,11 @@ class Review(models.Model):
                 fields=("title", "author"), name="unique_title_author"
             )
         ]
+        verbose_name = "Отзыв"
+        verbose_name_plural = "Отзывы"
 
     def __str__(self):
-        return self.text
+        return self.text[:15]
 
 
 class Comment(models.Model):
@@ -101,5 +105,9 @@ class Comment(models.Model):
     )
     pub_date = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        verbose_name = "Комментарий"
+        verbose_name_plural = "Комментарии"
+
     def __str__(self):
-        return self.text
+        return self.text[:15]
