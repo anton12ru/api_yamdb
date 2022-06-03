@@ -1,5 +1,4 @@
 # api_yamdb
-<<<<<<< HEAD
 
 ## Описание
 
@@ -97,6 +96,3 @@ python manage.py runserver
 [Антон Булыгин](https://github.com/anton12ru)
 
 [Лев]()
-=======
-api_yamdb
->>>>>>> 1e3f07e9477cd5eea8569af60f91ffb48f5ea796
