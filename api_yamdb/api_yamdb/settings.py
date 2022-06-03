@@ -1,14 +1,19 @@
-from datetime import timedelta
 import os
+
+from datetime import timedelta
+from dotenv import load_dotenv
+
+
+load_dotenv()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "p&l%385148kslhtyn^##a1)ilz@4zqj=rq&agdol^##zgl9(vs"
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
@@ -65,11 +70,15 @@ WSGI_APPLICATION = "api_yamdb.wsgi.application"
 # Database
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+    'default': {
+        'ENGINE': os.getenv('DB_ENGINE'),
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('POSTGRES_USER'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT')
     }
-}
+} 
 
 
 # Password validation
@@ -107,7 +116,9 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 
-STATICFILES_DIRS = (os.path.join(BASE_DIR, "static/"),)
+#STATICFILES_DIRS = (os.path.join(BASE_DIR, "static/"),)
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
@@ -121,7 +132,7 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(days=10),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=100),
     "AUTH_HEADER_TYPES": ("Bearer",),
 }
 
@@ -129,8 +140,14 @@ SIMPLE_JWT = {
 
 AUTH_USER_MODEL = "users.CustomUser"
 
-# Этот бэкэнд просто отображает все электронные письма в консоли.
+#  default email
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+# default email folder
+EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
 
 FROM_EMAIL = "from@example.com"
+
+#media file
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media') 
